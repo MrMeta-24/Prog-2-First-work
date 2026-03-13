@@ -1,34 +1,24 @@
-/*function fibonacci(times: number ): number {
-    let atual = 1 
-    let anterior = atual 
-    --times
-    console.log(atual)
-    while (times--) {
-        const proximo = atual + anterior
-        anterior = atual 
-        atual = proximo
-        console.log(atual)
-    }
-    return atual
-}
+const temp: string[] = [];
 
-fibonacci(5)*/
+const server = Bun.serve({
+    port: 3000,
+    routes: {
 
+        "/pessoa/:id": (req, res) => {
+            return new Response(`ID Pessoa: ${req.params.id} `)
+        },
 
+        "/pessoa/criar/:ID": (req, res) => {
+            if (!temp.includes(req.params.ID)) {
+                temp.push(req.params.ID)
+                return new Response(`Id pessoa: ${req.params.ID}`, { status: 201 })
+            }
+            return new Response("Pessoa ja existe");
+        }
 
-function fibonacci(times: number): number {
-    let atual = 1
-    let anterior = 0
+    },
 
-    while (times--) {
-        const proximo = atual + anterior
-        anterior = atual
-        atual = proximo
-    }
+    fetch: req => new Response("Hello world", { status: 404 }),
+});
 
-    return anterior
-}
-
-console.time("test")
-fibonacci(2500)
-console.timeEnd("test")
+console.log(`Server running at ${server.url}`);
